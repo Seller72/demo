@@ -77,6 +77,34 @@ nav a:hover{color:var(--c1)}
 .svc{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px;font-weight:700;display:flex;gap:12px;align-items:center}
 .svc .dot{width:12px;height:12px;border-radius:50%;background:var(--c2);flex:none}
 
+.prow .bk{margin-top:6px;border:0;background:var(--tint);color:var(--c1);font:700 13px Manrope,sans-serif;border-radius:8px;padding:5px 10px;cursor:pointer}
+
+/* booking */
+.book-sec{background:#fff}
+.book{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;margin-top:26px;align-items:start}
+.bform{background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:24px}
+.bform label{display:block;font-size:13px;font-weight:700;color:#3d4a44;margin:14px 0 6px}
+.bform label:first-child{margin-top:0}
+.bform input,.bform select,.bform textarea{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);font:15px Manrope,sans-serif;background:#fff;color:var(--ink)}
+.bform input:focus,.bform select:focus,.bform textarea:focus{outline:none;border-color:var(--c1)}
+.bform .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.slots{display:flex;flex-wrap:wrap;gap:8px}
+.slots button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;font:600 14px Manrope,sans-serif;cursor:pointer;color:var(--ink)}
+.slots button.on{background:var(--c1);border-color:var(--c1);color:#fff}
+.slots .empty{color:var(--muted);font-size:14px}
+.bform .err{color:#c0392b;font-size:13.5px;margin-top:10px;min-height:18px}
+.bform .btn{width:100%;margin-top:14px}
+.bsum{background:var(--c1);color:#fff;border-radius:22px;padding:24px;position:sticky;top:90px}
+.bsum h3{font-size:20px;margin-bottom:12px}
+.bsum .ln{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.15);font-size:15px}
+.bsum .ln span{opacity:.75}
+.bsum .ln b{text-align:right}
+.bsum .how{font-size:13.5px;opacity:.8;margin-top:14px}
+.bdone{display:none;margin-top:14px;background:var(--tint);color:var(--c1);border-radius:14px;padding:14px;font-size:14.5px}
+.bdone.on{display:block}
+.bdone .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.bdone .acts a,.bdone .acts button{border:0;border-radius:10px;padding:9px 13px;font:700 14px Manrope,sans-serif;cursor:pointer;text-decoration:none;background:#fff;color:var(--c1)}
+
 /* info */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
 .box{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px}
@@ -138,7 +166,8 @@ footer{background:#0d1512;color:#9aa9a2;padding:26px 0;font-size:13.5px}
 
 @media(max-width:980px){
  nav{display:none}
- .hero-grid,.info-grid,.ct-grid{grid-template-columns:1fr}
+ .hero-grid,.info-grid,.ct-grid,.book{grid-template-columns:1fr}
+ .bsum{position:static}
  .svc-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:600px){
@@ -152,6 +181,8 @@ footer{background:#0d1512;color:#9aa9a2;padding:26px 0;font-size:13.5px}
  .hero-btns .btn{flex:1 1 100%}
  .hero-card{padding:18px 16px}
  .rv-top{grid-template-columns:1fr;gap:16px}
+ .bform .g2{grid-template-columns:1fr}
+ .bform{padding:18px 16px}
  .prow{flex-direction:column;gap:4px}
  .fab{display:flex}
 }
@@ -189,7 +220,40 @@ footer{background:#0d1512;color:#9aa9a2;padding:26px 0;font-size:13.5px}
  <div class="svc-grid hidden" id="svcGrid"></div>
 </div></section>
 
-<section class="sec" id="info" style="padding-top:0"><div class="wrap">
+<section class="sec book-sec" id="book"><div class="wrap">
+ <span class="eyebrow">Онлайн-запись</span>
+ <h2 id="bTitle">Записаться</h2>
+ <p class="lead" id="bLead"></p>
+ <div class="book">
+  <form class="bform" id="bForm" novalidate>
+   <label for="bSvc">Услуга</label>
+   <select id="bSvc"></select>
+   <div class="g2">
+    <div><label for="bDate">Дата</label><input id="bDate" type="date"></div>
+    <div><label>Время</label><div class="slots" id="bSlots"></div></div>
+   </div>
+   <div class="g2">
+    <div><label for="bName">Ваше имя</label><input id="bName" autocomplete="given-name" placeholder="Как к вам обращаться"></div>
+    <div><label for="bPhone">Телефон</label><input id="bPhone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 900 000-00-00"></div>
+   </div>
+   <label for="bMsg">Комментарий (необязательно)</label>
+   <textarea id="bMsg" rows="2" placeholder="Например, к какому мастеру хотите"></textarea>
+   <div class="err" id="bErr"></div>
+   <button class="btn btn-main" type="submit" id="bSend">Отправить заявку</button>
+  </form>
+  <div class="bsum" id="bSum">
+   <h3>Ваша заявка</h3>
+   <div class="ln"><span>Услуга</span><b id="sSvc">—</b></div>
+   <div class="ln"><span>Стоимость</span><b id="sPrice">—</b></div>
+   <div class="ln"><span>Когда</span><b id="sWhen">—</b></div>
+   <div class="ln"><span>Имя</span><b id="sName">—</b></div>
+   <p class="how" id="bHow"></p>
+   <div class="bdone" id="bDone"></div>
+  </div>
+ </div>
+</div></section>
+
+<section class="sec" id="info"><div class="wrap">
  <span class="eyebrow">О компании</span>
  <h2>Режим работы и условия</h2>
  <div class="info-grid">
@@ -233,7 +297,7 @@ var route='https://yandex.ru/maps/?rtext=~'+D.point.lat+','+D.point.lon+'&rtt=au
 /* шапка */
 $('mk').textContent=D.name.charAt(0).toUpperCase();
 $('hName').textContent=D.name; $('hExt').textContent=D.ext||D.rubrics[0]||'';
-var navItems=[['#prices',D.prices?'Цены':'Услуги'],['#info','Режим работы'],['#reviews','Отзывы'],['#contacts','Контакты']];
+var navItems=[['#prices',D.prices?'Цены':'Услуги'],['#book','Запись'],['#info','Режим работы'],['#reviews','Отзывы'],['#contacts','Контакты']];
 $('nav').innerHTML=navItems.map(function(n){return '<a href="'+n[0]+'">'+n[1]+'</a>'}).join('');
 
 /* открыто сейчас (время Сургута) */
@@ -259,7 +323,7 @@ var stars=function(n){var s='';for(var i=1;i<=5;i++)s+=i<=Math.round(n)?'★':'<
 $('rTag').innerHTML=D.rating?'<span class="st">★</span> '+String(D.rating).replace('.',',')+' · '+D.ratingCount+' оценок в 2ГИС':'2ГИС';
 $('ext').textContent=D.ext||''; $('h1').textContent=D.name;
 $('rub').innerHTML=D.rubrics.slice(0,6).map(function(r){return '<span>'+esc(r)+'</span>'}).join('');
-var hb=[]; if(tel)hb.push('<a class="btn btn-main" href="'+tel+'">Позвонить</a>');
+var hb=['<a class="btn btn-main" href="#book">Записаться онлайн</a>']; if(tel)hb.push('<a class="btn btn-line" href="'+tel+'">Позвонить</a>');
 if(D.whatsapp)hb.push('<a class="btn btn-line" href="'+wa('Здравствуйте! Пишу с сайта.')+'" target="_blank" rel="noopener">Написать в WhatsApp</a>');
 hb.push('<a class="btn btn-line" href="'+route+'" target="_blank" rel="noopener">Маршрут</a>');
 $('heroBtns').innerHTML=hb.join('');
@@ -279,10 +343,11 @@ if(D.prices&&D.prices.items.length){
  function drawP(){var q=$('pSearch').value.trim().toLowerCase(),html='',last=null;
   D.prices.items.forEach(function(i){if(cur!=='all'&&i.c!==cur)return;if(q&&(i.n+' '+i.d).toLowerCase().indexOf(q)<0)return;
    if(i.c&&i.c!==last){html+='<div class="pcat">'+esc(i.c)+'</div>';last=i.c}
-   html+='<div class="prow"><div><b>'+esc(i.n)+'</b>'+(i.d?'<small>'+esc(i.d)+'</small>':'')+'</div><div class="pv">'+esc(i.p)+'</div></div>'});
+   html+='<div class="prow"><div><b>'+esc(i.n)+'</b>'+(i.d?'<small>'+esc(i.d)+'</small>':'')+'<button type="button" class="bk" data-bk="'+esc(i.n)+'">Записаться</button></div><div class="pv">'+esc(i.p)+'</div></div>'});
   $('pList').innerHTML=html||'<div class="prow"><div>Ничего не найдено</div></div>'}
  $('pChips').addEventListener('click',function(e){var b=e.target.closest('[data-c]');if(!b)return;cur=b.dataset.c;[].forEach.call($('pChips').children,function(x){x.classList.toggle('on',x===b)});drawP()});
  $('pSearch').addEventListener('input',drawP); drawP();
+ $('pList').addEventListener('click',function(e){var b=e.target.closest('[data-bk]');if(b)window.__pick(b.dataset.bk)});
  $('pNote').textContent=(D.prices.head?D.prices.head+'. ':'')+'Информация о ценах не является публичной офертой.';
  if(D.prices.items.length<8)$('pBlock').querySelector('.ptools').classList.add('hidden');
 }else{
@@ -291,6 +356,56 @@ if(D.prices&&D.prices.items.length){
  $('pBlock').classList.add('hidden'); $('svcGrid').classList.remove('hidden');
  $('svcGrid').innerHTML=D.rubrics.map(function(r){return '<div class="svc"><span class="dot"></span>'+esc(r)+'</div>'}).join('');
 }
+
+/* онлайн-запись: заявка уходит в WhatsApp, Telegram или на почту — что есть у компании */
+var tg=(D.links.find(function(l){return l.label==='Telegram'})||{}).url;
+var CH=D.whatsapp?'wa':tg?'tg':D.email?'mail':'call';
+var MON=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'], WD=['вс','пн','вт','ср','чт','пт','сб'];
+var svcs=[];
+if(D.prices&&D.prices.items.length){D.prices.items.forEach(function(i){svcs.push({n:i.n,p:i.p,c:i.c})})}
+else D.rubrics.forEach(function(r){svcs.push({n:r,p:'',c:''})});
+svcs.push({n:'Консультация / не знаю, что выбрать',p:'',c:''});
+(function(){var html='',last=null;svcs.forEach(function(s,i){if(s.c!==last){if(last!==null)html+='</optgroup>';if(s.c)html+='<optgroup label="'+esc(s.c)+'">';last=s.c}
+ html+='<option value="'+i+'">'+esc(s.n)+(s.p?' — '+esc(s.p):'')+'</option>'});if(last)html+='</optgroup>';$('bSvc').innerHTML='<option value="">Выберите услугу</option>'+html})();
+$('bLead').textContent='Выберите услугу, дату и удобное время — заявка уйдёт '+({wa:'в WhatsApp',tg:'в Telegram',mail:'на почту',call:''}[CH]||'')+' компании, вам перезвонят и подтвердят запись.';
+$('bHow').textContent=({wa:'Нажмите «Отправить» — откроется WhatsApp с готовым сообщением.',tg:'Нажмите «Отправить» — текст заявки скопируется и откроется Telegram, останется вставить и отправить.',mail:'Нажмите «Отправить» — откроется письмо с готовой заявкой, останется нажать «Отправить».',call:'Заявка сформируется — продиктуйте её администратору по телефону.'})[CH];
+$('bSend').textContent={wa:'Отправить заявку в WhatsApp',tg:'Отправить заявку в Telegram',mail:'Отправить заявку на почту',call:'Сформировать заявку'}[CH];
+var pad=function(n){return (n<10?'0':'')+n};
+var todayISO=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Yekaterinburg'}).format(new Date());
+var maxD=new Date(todayISO+'T12:00');maxD.setDate(maxD.getDate()+30);
+$('bDate').min=todayISO;$('bDate').max=maxD.toISOString().slice(0,10);$('bDate').value=todayISO;
+var bTime='';
+function mins(t){var a=t.split(':');return +a[0]*60+ +a[1]}
+function slotsFor(iso){
+ var d=new Date(iso+'T12:00'),di=(d.getDay()+6)%7,out=[];
+ var ranges=D.schedule.is24?[['00:00','24:00']]:(D.schedule.days[DAYS[di]]||[]);
+ ranges.forEach(function(r){var f=mins(r[0]),t=mins(r[1]);if(t<=f)t=24*60;for(var m=f;m+30<=t;m+=30)out.push(pad(Math.floor(m/60))+':'+pad(m%60))});
+ if(iso===todayISO){var nm=mins(now)+30;out=out.filter(function(s){return mins(s)>=nm})}
+ return out;
+}
+function drawSlots(){var L=slotsFor($('bDate').value);if(L.indexOf(bTime)<0)bTime='';
+ $('bSlots').innerHTML=L.length?L.map(function(s){return '<button type="button" class="'+(s===bTime?'on':'')+'" data-t="'+s+'">'+s+'</button>'}).join(''):'<span class="empty">В этот день нет свободного времени — выберите другую дату</span>';summary()}
+function whenText(){if(!$('bDate').value)return '';var d=new Date($('bDate').value+'T12:00');return d.getDate()+' '+MON[d.getMonth()]+' ('+WD[d.getDay()]+')'+(bTime?', '+bTime:'')}
+function summary(){var s=svcs[$('bSvc').value];$('sSvc').textContent=s?s.n:'—';$('sPrice').textContent=s&&s.p?s.p:(s?'уточнит администратор':'—');$('sWhen').textContent=whenText()||'—';$('sName').textContent=$('bName').value.trim()||'—'}
+$('bSlots').addEventListener('click',function(e){var b=e.target.closest('[data-t]');if(!b)return;bTime=b.dataset.t;drawSlots()});
+['bSvc','bDate','bName'].forEach(function(id){$(id).addEventListener(id==='bName'?'input':'change',function(){if(id==='bDate')drawSlots();else summary()})});
+drawSlots();
+function bookText(){var s=svcs[$('bSvc').value],m=$('bMsg').value.trim();
+ return ['Здравствуйте! Хочу записаться (заявка с сайта).','Услуга: '+s.n+(s.p?' ('+s.p+')':''),'Дата и время: '+whenText(),'Имя: '+$('bName').value.trim(),'Телефон: '+$('bPhone').value.trim()].concat(m?['Комментарий: '+m]:[]).join('\n')}
+$('bForm').addEventListener('submit',function(e){e.preventDefault();
+ var err='';if(!$('bSvc').value)err='Выберите услугу';else if(!$('bDate').value)err='Выберите дату';else if(!bTime)err='Выберите время';
+ else if($('bName').value.trim().length<2)err='Напишите имя';else if($('bPhone').value.replace(/\D/g,'').length<10)err='Проверьте номер телефона';
+ $('bErr').textContent=err;if(err)return;
+ var t=bookText(),link=null;
+ try{navigator.clipboard&&navigator.clipboard.writeText(t).catch(function(){})}catch(_){}
+ if(CH==='wa')link=wa(t);else if(CH==='tg')link=tg;else if(CH==='mail')link='mailto:'+D.email+'?subject='+encodeURIComponent('Запись с сайта: '+svcs[$('bSvc').value].n)+'&body='+encodeURIComponent(t);
+ if(link)window.open(link,CH==='mail'?'_self':'_blank');
+ $('bDone').innerHTML='<b>Заявка готова ✓</b><br>'+({wa:'Отправьте сообщение в открывшемся WhatsApp.',tg:'Текст скопирован — вставьте его в чат Telegram.',mail:'Отправьте открывшееся письмо.',call:'Позвоните и продиктуйте заявку.'})[CH]+
+  ' Если ничего не открылось — позвоните или скопируйте заявку.<div class="acts">'+(tel?'<a href="'+tel+'">📞 Позвонить</a>':'')+'<button type="button" id="bCopy">Скопировать заявку</button></div>';
+ $('bDone').classList.add('on');
+ $('bCopy').onclick=function(){var ok=function(){$('bCopy').textContent='Скопировано ✓'};try{navigator.clipboard.writeText(t).then(ok,function(){prompt('Скопируйте заявку:',t)})}catch(_){prompt('Скопируйте заявку:',t)}};
+});
+window.__pick=function(name){var i=svcs.findIndex(function(s){return s.n===name});if(i>=0){$('bSvc').value=String(i);summary()}$('book').scrollIntoView({behavior:'smooth'})};
 
 /* режим работы и условия */
 $('hours').innerHTML=D.schedule.is24?'<tr><td>Ежедневно</td><td>Круглосуточно</td></tr>':DAYS.map(function(d,i){var h=D.schedule.days[d];return '<tr'+(i===today?' class="today"':'')+'><td>'+RU[i]+'</td><td>'+(h&&h.length?h.map(function(x){return x[0]+'–'+x[1]}).join(', '):'Выходной')+'</td></tr>'}).join('');
